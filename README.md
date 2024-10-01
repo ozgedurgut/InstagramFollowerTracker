@@ -1,4 +1,4 @@
-# compare_file
+# InstagramFollowerTracker
 Compare two file and print unmatched lines
 
 
