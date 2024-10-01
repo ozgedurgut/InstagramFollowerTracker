@@ -1,13 +1,22 @@
 import re
 
 def clean_text(text):
-    # 'in profil resmi' gibi gereksiz ifadeleri temizle
-    return re.sub(r"in profil resmi", "", text, flags=re.IGNORECASE).strip()
+    # Clean unnecessary phrases in Turkish and English
+    patterns = [
+        r"Ara",
+        r"Search",
+        r"'in profil resmi",  # Turkish: 'in profil resmi'
+        r"'s profile picture"  # English: 's profile picture'
+    ]
+    
+    for pattern in patterns:
+        text = re.sub(pattern, "", text, flags=re.IGNORECASE)
+    return text.strip()
 
 def has_common_words(text1, text2):
     words1 = set(text1.split())
     words2 = set(text2.split())
-    # iki metin arasında ortak kelimeler var mı kontrol et
+    # Check if there are common words between the two texts
     return bool(words1 & words2)
 
 def group_related_lines(lines):
@@ -17,17 +26,17 @@ def group_related_lines(lines):
     for line in lines:
         cleaned_line = clean_text(line.strip().lower())
         if not cleaned_line:
-            continue  # Boş satırları atla
+            continue  # Skip empty lines
 
-        # Eğer current_group boşsa, bu satır gruba eklenir
+        # If current_group is empty, add this line to the group
         if not current_group:
             current_group.append(cleaned_line)
         else:
-            # Eğer son satır ile bu satır arasında ilişki varsa gruba ekle
+            # If there is a relationship between the last line and this line, add to the group
             if has_common_words(current_group[-1], cleaned_line):
                 current_group.append(cleaned_line)
             else:
-                # İlişki yoksa mevcut grubu kapat ve yeni bir grup başlat
+                # If there is no relationship, close the current group and start a new one
                 groups.append(current_group)
                 current_group = [cleaned_line]
 
@@ -51,11 +60,11 @@ def compare_groups(file1, file2):
     for group1 in groups_file1:
         found_match = False
         for group2 in groups_file2:
-            # Grupları birleştirip her kelimeyi kontrol et
+            # Merge the groups and check each word
             words_in_group1 = set(' '.join(group1).split())
             words_in_group2 = set(' '.join(group2).split())
 
-            # Eğer herhangi bir kelime eşleşirse eşleşme var demektir
+            # If any word matches, it indicates a match
             if words_in_group1 & words_in_group2:
                 found_match = True
                 break
@@ -71,8 +80,8 @@ file2_path = 'file2'
 unmatched_groups = compare_groups(file1_path, file2_path)
 
 if unmatched_groups:
-    print("Hiçbir kelimesi eşleşmeyen gruplar:")
+    print("Groups with no matching words:")
     for group in unmatched_groups:
         print(group)
 else:
-    print("Tüm gruplarda en az bir kelime eşleşti.")
+    print("All groups have at least one matching word.")
