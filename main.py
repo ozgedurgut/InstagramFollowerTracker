@@ -5,6 +5,14 @@ def clean_text(text):
     patterns = [
         r"Ara",
         r"Search",
+        r"Followers",
+        r"People",
+        r"Hashtags",
+        r"Takip Ettikleri",
+        r"Kişiler",
+        r"Konu Etiketleri",
+        r"Takipçiler"
+        r"Following",
         r"'in profil resmi",  # Turkish: 'in profil resmi'
         r"'s profile picture"  # English: 's profile picture'
     ]
