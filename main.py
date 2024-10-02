@@ -11,12 +11,11 @@ def clean_text(text):
         r"Takip Ettikleri",
         r"Kişiler",
         r"Konu Etiketleri",
-        r"Takipçiler"
+        r"Takipçiler",
         r"Following",
         r"'in profil resmi",  # Turkish: 'in profil resmi'
         r"'s profile picture"  # English: 's profile picture'
     ]
-    
     for pattern in patterns:
         text = re.sub(pattern, "", text, flags=re.IGNORECASE)
     return text.strip()
