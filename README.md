@@ -2,7 +2,7 @@
 Compare two file and print unmatched lines
 
 
-Put and save the files containing the old and new lists into the files named file1 and file2.
+Put and save the files containing the followers and following lists into the files named file1 and file2.
 
 Then run the main.py file.
 
